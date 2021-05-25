@@ -1,11 +1,14 @@
 package com.cg.web;
 
 import java.util.List;
-import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,17 +19,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.mts.Exception.CustomerException;
 import com.cg.mts.Repository.CustomerRepository;
-
-import com.cg.mts.entities.Activity;
+import com.cg.mts.Service.CustomerService;
 import com.cg.mts.entities.Customer;
-import com.cg.mts.entities.TicketBooking;
 
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
-
+	
 	@Autowired
 	CustomerRepository customerRepository;
+	
+	@Autowired
+	CustomerService customerService;
+	
+	static Logger logger = LoggerFactory.getLogger(CustomerController.class);
 	
 	@GetMapping("/all")
 	public List<Customer> getCustomer()
@@ -35,22 +41,21 @@ public class CustomerController {
 	}
 	
 	@PostMapping("/add")
-	public Customer addCustomer(@RequestBody Customer customer)
+	public Customer insertCustomer(@RequestBody Customer customer)
 	{
 		return customerRepository.save(customer);
 	}
-
-	@PutMapping("/updateCustomer")
-	public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer) {
-		Optional<Customer> opt = customerRepository.findById(customer.getCustomerId());
-		try {
-			if (opt.isPresent()) {
-				return new ResponseEntity<Customer>(customerRepository.save(customer), HttpStatus.OK);
-			} else
-				
-				throw new CustomerException("Product cannot be updated\nProduct not present");
-		} catch (CustomerException e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
-		}
+	
+	@PutMapping("/update/{id}")
+	public void updateCustomer(@PathVariable Integer id, @RequestBody Customer customer) throws CustomerException
+	{
+		customerService.updateCustomer(id, customer);
 	}
+	
+	 @DeleteMapping("/delete/{id}")
+		public String deleteCab(@PathVariable int id)
+		{
+			return customerService.deleteCustomer(id);
+		}
+	
 }

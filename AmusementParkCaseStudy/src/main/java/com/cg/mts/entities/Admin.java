@@ -6,9 +6,10 @@ import javax.persistence.Entity;
 @Entity
 public class Admin extends AbstractUser{
 	
-	
 	private int adminId;
 	private String type="Admin";
+	
+	
 	public String getType() {
 		return type;
 	}

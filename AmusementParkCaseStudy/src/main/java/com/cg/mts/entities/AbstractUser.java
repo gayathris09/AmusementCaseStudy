@@ -10,14 +10,22 @@ import javax.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractUser {
-	
+
 	@Id
+	private int userId;
+	@Column(name = "username")
 	private String username;
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	@Column(name = "password")
 	private String password;
 	@Column(name = "mobile_number")
 	private String mobileNumber;
-	@Column(name = "email_id")
+	@Column(name = "email_id", nullable = false)
 	private String email;
 	@Column(name="address")
 	private String Address;

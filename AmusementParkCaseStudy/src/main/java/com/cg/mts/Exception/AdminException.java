@@ -6,5 +6,4 @@ public class AdminException extends Exception{
 	{
 		super(s);
 	}
-
 }

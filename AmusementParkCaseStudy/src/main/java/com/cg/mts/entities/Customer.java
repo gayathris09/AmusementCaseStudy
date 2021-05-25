@@ -6,8 +6,6 @@ import javax.persistence.*;
 @Entity
 public class Customer extends AbstractUser{
 	
-	
-	
 	private int customerId;
 	private String type="Customer";
    
